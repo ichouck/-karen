@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Karen</title>
+  <title>KAREN</title>
 
   <style>
     * {
@@ -53,15 +53,22 @@
     }
 
     .message {
-      background: #171717;
       padding: 14px 16px;
       border-radius: 18px;
       margin-bottom: 12px;
       max-width: 85%;
+      line-height: 1.4;
     }
 
     .karen-message {
       margin-right: auto;
+      background: #171717;
+    }
+
+    .user-message {
+      margin-left: auto;
+      background: white;
+      color: black;
     }
 
     .input-area {
@@ -91,33 +98,80 @@
       font-size: 20px;
       cursor: pointer;
     }
+
+    button:hover {
+      background: #cccccc;
+    }
   </style>
 </head>
 
 <body>
 
   <div class="karen">
+    <div class="header">KAREN</div>
 
-    <div class="header">
-      KAREN
-    </div>
-
-    <div class="status">
+    <div class="status" id="status">
       ● Prête à vous assister
     </div>
 
-    <div class="chat">
+    <div class="chat" id="chat">
       <div class="message karen-message">
         Bonjour. Je suis Karen. Comment puis-je vous aider ?
       </div>
     </div>
 
-    <div class="input-area">
-      <input type="text" placeholder="Écrivez à Karen...">
-      <button type="button" disabled>Envoyer</button>
-    </div>
+    <form class="input-area" id="messageForm">
+      <input
+        id="messageInput"
+        type="text"
+        placeholder="Écrivez à Karen..."
+        autocomplete="off"
+      >
 
+      <button type="submit">➤</button>
+    </form>
   </div>
+
+  <script>
+    const form = document.getElementById("messageForm");
+    const input = document.getElementById("messageInput");
+    const chat = document.getElementById("chat");
+    const status = document.getElementById("status");
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const message = input.value.trim();
+
+      if (message === "") {
+        return;
+      }
+
+      ajouterMessage(message, "user-message");
+      input.value = "";
+
+      status.textContent = "● Karen réfléchit...";
+
+      setTimeout(() => {
+        ajouterMessage(
+          "J’ai bien reçu votre message. Je suis encore en cours de connexion à mon intelligence artificielle.",
+          "karen-message"
+        );
+
+        status.textContent = "● Prête à vous assister";
+      }, 800);
+    });
+
+    function ajouterMessage(texte, classe) {
+      const message = document.createElement("div");
+
+      message.className = "message " + classe;
+      message.textContent = texte;
+
+      chat.appendChild(message);
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
 
 </body>
 </html>
